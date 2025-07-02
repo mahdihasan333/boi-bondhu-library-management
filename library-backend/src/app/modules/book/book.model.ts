@@ -10,9 +10,7 @@ const bookSchema = new Schema(
     copies: { type: Number, required: true },
     available: { type: Boolean, default: true },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 export const Book = model("Book", bookSchema);

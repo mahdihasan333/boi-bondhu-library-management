@@ -1,24 +1,23 @@
-import dotenv from 'dotenv';
-dotenv.config();
-import  {Server}  from "http";
-import app from "./app";
 import mongoose from "mongoose";
+import app from "./app";
+import dotenv from "dotenv";
 
-let server : Server;
+dotenv.config();
 
-const PORT = process.env.PORT || 5000
+const port = process.env.PORT || 5000;
+const uri = process.env.DATABASE_URL as string;
 
 async function main() {
-    try {
-        await mongoose.connect(process.env.DATABASE_URL as string);
-        console.log('Connected to MongoDB Using Mongoose!')
-        server = app.listen(PORT, ()=> {
-            console.log(`App is listening on port ${PORT}`);
+  try {
+    await mongoose.connect(uri);
+    console.log("✅ Database connected");
 
-        })
-    } catch (error) {
-        console.log(error)
-    }
+    app.listen(port, () => {
+      console.log(`🚀 Server is running on http://localhost:${port}`);
+    });
+  } catch (err) {
+    console.error("❌ Failed to connect DB", err);
+  }
 }
 
-main()
+main();
