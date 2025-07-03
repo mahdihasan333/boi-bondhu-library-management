@@ -10,7 +10,7 @@ app.get("/", (_req: Request, res: Response) => {
   res.send("📚 Welcome to boi-bondhu-library-management");
 });
 
-app.use("/api/books", BookRoutes);
-app.use("/api/borrow", BorrowRoutes);
+app.use("/books", BookRoutes);
+app.use("/borrow", BorrowRoutes);
 
 export default app;
