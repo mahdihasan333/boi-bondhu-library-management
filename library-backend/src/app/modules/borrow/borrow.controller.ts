@@ -1,16 +1,21 @@
 import { Request, Response } from "express";
 import { Borrow } from "./borrow.model";
 import { Book } from "../book/book.model";
-
+import { borrowValidationSchema } from "./borrow.validation";
 
 // ✅ Borrow a Book
 export const borrowBook = async (req: Request, res: Response) => {
   try {
     const { bookId } = req.params;
-    const { quantity, dueDate } = req.body;
+
+    // Validate request body
+    const parsed = borrowValidationSchema.parse(req.body);
+    const { quantity, dueDate } = parsed;
 
     const book = await Book.findById(bookId);
-    if (!book) return res.status(404).json({ success: false, message: "Book not found" });
+    if (!book) {
+      return res.status(404).json({ success: false, message: "Book not found" });
+    }
 
     if (quantity > book.copies) {
       return res.status(400).json({
@@ -25,12 +30,20 @@ export const borrowBook = async (req: Request, res: Response) => {
       dueDate,
     });
 
+    // Update book copies and availability
     book.copies -= quantity;
     book.available = book.copies > 0;
     await book.save();
 
     res.status(201).json({ success: true, data: borrow });
   } catch (error: any) {
+    if (error.name === "ZodError") {
+      return res.status(400).json({
+        success: false,
+        message: "Validation failed",
+        errors: error.errors,
+      });
+    }
     res.status(400).json({ success: false, message: error.message });
   }
 };
