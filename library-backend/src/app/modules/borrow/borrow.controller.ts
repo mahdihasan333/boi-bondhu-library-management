@@ -3,12 +3,11 @@ import { Borrow } from "./borrow.model";
 import { Book } from "../book/book.model";
 import { borrowValidationSchema } from "./borrow.validation";
 
-// ✅ Borrow a Book
-export const borrowBook = async (req: Request, res: Response) => {
+const borrowBook = async (req: Request, res: Response) => {
   try {
     const { bookId } = req.params;
 
-    // Validate request body
+    
     const parsed = borrowValidationSchema.parse(req.body);
     const { quantity, dueDate } = parsed;
 
@@ -30,7 +29,6 @@ export const borrowBook = async (req: Request, res: Response) => {
       dueDate,
     });
 
-    // Update book copies and availability
     book.copies -= quantity;
     book.available = book.copies > 0;
     await book.save();
@@ -48,7 +46,7 @@ export const borrowBook = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ Borrow Summary
+// Borrow Summary
 export const getBorrowSummary = async (_req: Request, res: Response) => {
   try {
     const summary = await Borrow.aggregate([

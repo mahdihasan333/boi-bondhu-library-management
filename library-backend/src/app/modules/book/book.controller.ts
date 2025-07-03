@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { Book } from "./book.model";
 
 
-// ✅ Create Book
+// Create Book
 export const createBook = async (req: Request, res: Response) => {
   try {
     const { copies } = req.body;
@@ -15,7 +15,7 @@ export const createBook = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ Get All Books (with Pagination)
+// Get All Books
 export const getAllBooks = async (req: Request, res: Response) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
@@ -31,7 +31,7 @@ export const getAllBooks = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ Get Book By ID
+// Get Book By ID
 export const getBookById = async (req: Request, res: Response) => {
   try {
     const book = await Book.findById(req.params.id);
@@ -43,7 +43,7 @@ export const getBookById = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ Update Book
+// Update Book
 export const updateBook = async (req: Request, res: Response) => {
   try {
     const { copies } = req.body;
@@ -61,7 +61,7 @@ export const updateBook = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ Delete Book
+// Delete Book
 export const deleteBook = async (req: Request, res: Response) => {
   try {
     const book = await Book.findByIdAndDelete(req.params.id);
