@@ -3,24 +3,25 @@ import { Borrow } from "./borrow.model";
 import { Book } from "../book/book.model";
 import { borrowValidationSchema } from "./borrow.validation";
 
-const borrowBook = async (req: Request, res: Response) => {
+export const borrowBook = async (req: Request, res: Response): Promise<void> => {
   try {
     const { bookId } = req.params;
 
-    
     const parsed = borrowValidationSchema.parse(req.body);
     const { quantity, dueDate } = parsed;
 
     const book = await Book.findById(bookId);
     if (!book) {
-      return res.status(404).json({ success: false, message: "Book not found" });
+      res.status(404).json({ success: false, message: "Book not found" });
+      return;
     }
 
     if (quantity > book.copies) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         message: "Not enough copies available",
       });
+      return;
     }
 
     const borrow = await Borrow.create({
@@ -36,18 +37,19 @@ const borrowBook = async (req: Request, res: Response) => {
     res.status(201).json({ success: true, data: borrow });
   } catch (error: any) {
     if (error.name === "ZodError") {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         message: "Validation failed",
         errors: error.errors,
       });
+      return;
     }
     res.status(400).json({ success: false, message: error.message });
   }
 };
 
 // Borrow Summary
-export const getBorrowSummary = async (_req: Request, res: Response) => {
+export const getBorrowSummary = async (_req: Request, res: Response): Promise<void> => {
   try {
     const summary = await Borrow.aggregate([
       {

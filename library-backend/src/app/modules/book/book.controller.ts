@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import { Book } from "./book.model";
 
-
 // Create Book
-export const createBook = async (req: Request, res: Response) => {
+export const createBook = async (req: Request, res: Response): Promise<void> => {
   try {
     const { copies } = req.body;
     const available = copies > 0;
@@ -16,7 +15,7 @@ export const createBook = async (req: Request, res: Response) => {
 };
 
 // Get All Books
-export const getAllBooks = async (req: Request, res: Response) => {
+export const getAllBooks = async (req: Request, res: Response): Promise<void> => {
   try {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
@@ -32,10 +31,13 @@ export const getAllBooks = async (req: Request, res: Response) => {
 };
 
 // Get Book By ID
-export const getBookById = async (req: Request, res: Response) => {
+export const getBookById = async (req: Request, res: Response): Promise<void> => {
   try {
     const book = await Book.findById(req.params.id);
-    if (!book) return res.status(404).json({ success: false, message: "Book not found" });
+    if (!book) {
+      res.status(404).json({ success: false, message: "Book not found" });
+      return;
+    }
 
     res.json({ success: true, data: book });
   } catch (error: any) {
@@ -44,7 +46,7 @@ export const getBookById = async (req: Request, res: Response) => {
 };
 
 // Update Book
-export const updateBook = async (req: Request, res: Response) => {
+export const updateBook = async (req: Request, res: Response): Promise<void> => {
   try {
     const { copies } = req.body;
     const available = copies > 0;
@@ -62,7 +64,7 @@ export const updateBook = async (req: Request, res: Response) => {
 };
 
 // Delete Book
-export const deleteBook = async (req: Request, res: Response) => {
+export const deleteBook = async (req: Request, res: Response): Promise<void> => {
   try {
     const book = await Book.findByIdAndDelete(req.params.id);
     res.json({ success: true, data: book });

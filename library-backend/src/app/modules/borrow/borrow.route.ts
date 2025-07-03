@@ -1,8 +1,6 @@
 import express from "express";
-import {
-  borrowBook,
-  getBorrowSummary,
-} from "./borrow.controller";
+import { borrowBook, getBorrowSummary } from "./borrow.controller";
+
 
 const router = express.Router();
 
