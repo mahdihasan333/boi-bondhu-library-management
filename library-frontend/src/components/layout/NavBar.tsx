@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { ModeToggle } from "../mode-toggle";
+
 import { Link } from "react-router";
-import bookIcon from "../../assets/book.svg";
+import bookIcon from "../../assets/book.png";
+import { ModeToggle } from "../ui/mode-toggle";
 
 export const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
