@@ -17,7 +17,9 @@ interface GetBooksResponse {
 
 export const booksApi = createApi({
   reducerPath: "booksApi",
-  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: BASE_URL,
+  }),
   tagTypes: ["Books", "Borrows"],
   endpoints: (builder) => ({
     createBook: builder.mutation<void, CreateBookInput>({
@@ -28,14 +30,18 @@ export const booksApi = createApi({
       }),
       invalidatesTags: ["Books", "Borrows"],
     }),
+
     getBooks: builder.query<GetBooksResponse, GetBooksParams | void>({
-      query: ({ page = 1, limit = 6 } = {}) => `/books?page=${page}&limit=${limit}`,
+      query: ({ page = 1, limit = 6 } = {}) =>
+        `/books?page=${page}&limit=${limit}`,
       providesTags: ["Books"],
     }),
+
     getBookById: builder.query<IBook, string>({
       query: (id) => `/books/${id}`,
       providesTags: (_result, _error, id) => [{ type: "Books", id }],
     }),
+
     updateBook: builder.mutation<void, { id: string; data: Partial<IBook> }>({
       query: ({ id, data }) => ({
         url: `/books/${id}`,
@@ -44,6 +50,7 @@ export const booksApi = createApi({
       }),
       invalidatesTags: ["Books", "Borrows"],
     }),
+
     deleteBook: builder.mutation<void, string>({
       query: (id) => ({
         url: `/books/${id}`,
