@@ -1,73 +1,74 @@
-import { Request, Response } from "express";
-import { Book } from "./book.model";
+import { Request, Response } from 'express';
+import { Book } from './book.model';
 
-// Create Book
-export const createBook = async (req: Request, res: Response): Promise<void> => {
+export const createBook = async (req: Request, res: Response) => {
   try {
-    const { copies } = req.body;
-    const available = copies > 0;
-
-    const book = await Book.create({ ...req.body, available });
+    const book = new Book({ ...req.body });
+    await book.save();
     res.status(201).json({ success: true, data: book });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
   }
 };
 
-// Get All Books
-export const getAllBooks = async (req: Request, res: Response): Promise<void> => {
+export const getAllBooks = async (req: Request, res: Response) => {
   try {
-    const page = parseInt(req.query.page as string) || 1;
-    const limit = parseInt(req.query.limit as string) || 10;
-    const skip = (page - 1) * limit;
+    const { filter, sortBy = 'createdAt', sort = 'desc', limit = '10', page = '1' } = req.query;
 
-    const books = await Book.find().skip(skip).limit(limit);
-    const total = await Book.countDocuments();
+    const query: Record<string, any> = {};
+    if (filter) query.genre = filter;
 
-    res.json({ success: true, total, page, limit, data: books });
+    const sortField = sortBy as string;
+    const sortOrder = sort === 'desc' ? -1 : 1;
+    const limitNum = parseInt(limit as string);
+    const pageNum = parseInt(page as string);
+    const skip = (pageNum - 1) * limitNum;
+
+    const [books, total] = await Promise.all([
+      Book.find(query).sort({ [sortField]: sortOrder }).skip(skip).limit(limitNum),
+      Book.countDocuments(query),
+    ]);
+
+    res.status(200).json({
+      success: true,
+      data: books,
+      meta: { page: pageNum, limit: limitNum, total },
+    });
   } catch (error: any) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// Get Book By ID
-export const getBookById = async (req: Request, res: Response): Promise<void> => {
+export const getBookById = async (req: Request, res: Response) => {
   try {
     const book = await Book.findById(req.params.id);
     if (!book) {
-      res.status(404).json({ success: false, message: "Book not found" });
+      res.status(404).json({ success: false, message: 'Book not found' });
       return;
     }
-
-    res.json({ success: true, data: book });
+    res.status(200).json({ success: true, data: book });
   } catch (error: any) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// Update Book
-export const updateBook = async (req: Request, res: Response): Promise<void> => {
+export const updateBook = async (req: Request, res: Response) => {
   try {
-    const { copies } = req.body;
-    const available = copies > 0;
-
     const book = await Book.findByIdAndUpdate(
       req.params.id,
-      { ...req.body, available },
+      { ...req.body, available: req.body.copies > 0 },
       { new: true }
     );
-
-    res.json({ success: true, data: book });
+    res.status(200).json({ success: true, data: book });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
   }
 };
 
-// Delete Book
-export const deleteBook = async (req: Request, res: Response): Promise<void> => {
+export const deleteBook = async (req: Request, res: Response) => {
   try {
     const book = await Book.findByIdAndDelete(req.params.id);
-    res.json({ success: true, data: book });
+    res.status(200).json({ success: true, data: book });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
   }
