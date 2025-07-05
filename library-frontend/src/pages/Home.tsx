@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet";
 import Books from "./Books";
 import AboutUs from "@/components/layout/AboutUs";
 import FAQ from "@/components/layout/Faq";
+import TestimonialsCarousel from "@/components/layout/Testimonials";
 
 
 export const Home = () => {
@@ -15,6 +16,7 @@ export const Home = () => {
       <HeroSection />
       <AboutUs/>
       <Books />
+      <TestimonialsCarousel/>
       <FAQ/>
     </div>
   );
