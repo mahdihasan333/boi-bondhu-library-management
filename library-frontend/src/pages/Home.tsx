@@ -2,6 +2,7 @@ import { HeroSection } from "@/components/layout/HeroSection";
 import { Helmet } from "react-helmet";
 import Books from "./Books";
 import AboutUs from "@/components/layout/AboutUs";
+import FAQ from "@/components/layout/Faq";
 
 
 export const Home = () => {
@@ -14,6 +15,7 @@ export const Home = () => {
       <HeroSection />
       <AboutUs/>
       <Books />
+      <FAQ/>
     </div>
   );
 };
