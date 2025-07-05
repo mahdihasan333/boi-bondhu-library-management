@@ -1,104 +1,163 @@
-# 📚 Boi Bondhu Library Management - Backend
+# Library Management API
 
-A minimal RESTful backend API for managing a library system. Built with **Node.js**, **Express.js**, **MongoDB**, and **TypeScript**, this backend handles book management and borrowing functionalities with proper validations and business logic.
-
----
-
-## 🚀 Features
-
-- ✅ Book CRUD operations (Create, Read, Update, Delete)
-- ✅ Borrow books with quantity & due date validation
-- ✅ Borrow summary with aggregation
-- ✅ Pagination for book list
-- ✅ Zod-based schema validation
-- ✅ Business logic for availability & stock control
-- ✅ Modular MVC architecture
-
----
-
-## ⚙️ Tech Stack
-
-| Layer         | Technology                  |
-|--------------|-----------------------------|
-| Runtime       | Node.js                     |
-| Server        | Express.js                  |
-| Language      | TypeScript                  |
-| Database      | MongoDB + Mongoose          |
-| Validation    | Zod                         |
-| Environment   | dotenv                      |
-
-
----
-
-## 🔌 API Endpoints
-
-### 📚 Book Routes
-
-| Method | Endpoint             | Description             |
-|--------|----------------------|-------------------------|
-| GET    | `/books`         | Get all books (paginated) |
-| GET    | `/books/:id`     | Get single book details |
-| POST   | `/books`         | Create new book         |
-| PATCH  | `/books/:id`     | Update existing book    |
-| DELETE | `/books/:id`     | Delete a book           |
-
----
-
-### 📦 Borrow Routes
-
-| Method | Endpoint                       | Description                  |
-|--------|--------------------------------|------------------------------|
-| POST   | `/borrow/:bookId`          | Borrow a book (quantity, due date) |
-| GET    | `/borrow/summary/all`      | View summary of all borrowed books |
-
----
-
-## 🌐 Environment Variables
-
-Create a `.env` file in the root directory and add:
-
-PORT=5000
-DATABASE_URL=your_mongodb_connection_string
-
-
----
-
-## 🧪 Getting Started
-
-### ✅ Prerequisites
-
-- Node.js ≥ 18
-- MongoDB (local or cloud)
-- npm or yarn
-
----
-
-### ⚙️ Setup & Run
+## Live Link
 
 ```bash
-# Install dependencies
+https://assignment-3-0-gules.vercel.app/api/books
+```
+
+A simple and efficient **RESTful API** built using **Node.js**, **Express**, and **MongoDB** to manage a library system. This system allows users to manage books and borrowing operations, with features like CRUD operations, filtering, sorting, and aggregation of borrowed records.
+
+---
+
+## Features
+
+- Add, view, update, and delete books
+- Filter and sort books by genre, availability, or creation date
+- Borrow books with due dates and quantity tracking
+- Aggregation for borrowed book summaries (total quantity borrowed per book)
+- Automatic timestamps (createdAt, updatedAt)
+- Error handling and HTTP status codes
+
+---
+
+```markdown
+## Project Structure
+
+src/
+│
+├── controllers/ # Route handlers (books & borrows)
+├── models/ # Mongoose models (Book, Borrow)
+├── db/ # MongoDB connection
+├── interface/ # Interface definitions
+├── routers/ # Express routes
+└── index.ts # App entry point
+
+---
+
+## Tech Stack
+
+- **Node.js** + **Express**
+- **MongoDB** with **Mongoose**
+- **TypeScript** for type safety
+- **ts-node-dev** for development
+- **dotenv** for environment variables
+```
+
+## Installation
+
+```bash
+git clone https://github.com/muhammadranju/library-management-api.git
+```
+
+```bash
+cd library-management-api
+```
+
+```bash
 npm install
+```
 
-# Start the server in development mode
+---
+
+## ▶ Running the Server
+
+```bash
 npm run dev
-✅ Sample Request Body
-Create Book (POST /api/books)
-json
+```
 
+Make sure MongoDB is running locally or update the connection string in your `.env`.
+
+---
+
+## API Endpoints
+
+### Books
+
+| Method | Endpoint         | Description                             |
+| ------ | ---------------- | --------------------------------------- |
+| GET    | `/api/books`     | Get all books (supports filtering/sort) |
+| GET    | `/api/books/:id` | Get a single book by ID                 |
+| POST   | `/api/books`     | Create a new book                       |
+| PATCH  | `/api/books/:id` | Update an existing book                 |
+| DELETE | `/api/books/:id` | Delete a book                           |
+
+#### Example with filtering/sorting
+
+```http
+GET /api/books?filter=FANTASY&sortBy=createdAt&sort=desc&limit=5
+```
+
+- `filter`: Filter by genre (e.g., FANTASY)
+- `sortBy`: Field to sort by (e.g., createdAt)
+- `sort`: Sort direction (`asc` or `desc`)
+- `limit`: Number of records to return
+
+---
+
+### Borrows
+
+| Method | Endpoint      | Description                               |
+| ------ | ------------- | ----------------------------------------- |
+| GET    | `/api/borrow` | Get all borrows (aggregated book summary) |
+| POST   | `/api/borrow` | Create a borrow request                   |
+
+#### Aggregated Borrow Summary
+
+Returns total quantity borrowed for each book:
+
+```json
+[
+  {
+    "book": {
+      "title": "The Theory of Everything",
+      "isbn": "9780501653383"
+    },
+    "totalQuantity": 5
+  }
+]
+```
+
+---
+
+## Book Model
+
+```ts
 {
-  "title": "Clean Code",
-  "author": "Robert C. Martin",
-  "genre": "Programming",
-  "isbn": "9780132350884",
-  "description": "A Handbook of Agile Software Craftsmanship",
-  "copies": 5
+  title: string;
+  author: string;
+  genre: string;
+  isbn: string;
+  copies: number;
+  description: string;
+  available: boolean;
 }
-Borrow Book (POST /api/borrow/:bookId)
-json
+```
 
+---
+
+## Borrow Model
+
+```ts
 {
-  "quantity": 2,
-  "dueDate": "2025-07-15"
+  book: ObjectId; // Reference to Book
+  quantity: number;
+  dueDate: Date;
 }
+```
 
+---
 
+## Sample Book JSON
+
+```json
+{
+  "title": "The Theory of Everything",
+  "author": "Stephen Hawking",
+  "genre": "SCIENCE",
+  "isbn": "9780501653383",
+  "description": "An overview of cosmology and black holes.",
+  "copies": 5,
+  "available": true
+}
+```

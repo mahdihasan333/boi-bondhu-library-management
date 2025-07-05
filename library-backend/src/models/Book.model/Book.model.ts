@@ -2,7 +2,6 @@ import { Schema, model } from "mongoose";
 import { IBook } from "../../interface/interface";
 import Borrow from "../Borrow.model/Borrow.model";
 
-
 const BookSchema = new Schema<IBook>(
   {
     title: {

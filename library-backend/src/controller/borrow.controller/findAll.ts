@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import Borrow from "../../models/Borrow.model/Borrow.model";
 
-
 const findAllBorrows = async (req: Request, res: Response) => {
   try {
     const borrows = await Borrow.aggregate([

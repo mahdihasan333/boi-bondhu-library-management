@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import Book from "../../models/Book.model/Book.model";
 
-
 export const findSingleBook = async (
   req: Request,
   res: Response
