@@ -1,7 +1,7 @@
 import { HeroSection } from "@/components/layout/HeroSection";
 import { Helmet } from "react-helmet";
 import Books from "./Books";
-import { Statistic } from "@/components/layout/Statistic";
+
 
 export const Home = () => {
   return (
@@ -12,7 +12,6 @@ export const Home = () => {
       </Helmet>
       <HeroSection />
       <Books />
-      <Statistic />
     </div>
   );
 };
