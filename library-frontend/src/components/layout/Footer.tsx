@@ -12,7 +12,7 @@ export const Footer = () => {
               className="w-8 text-black dark:text-white dark:invert"
             />
             <span className="ml-2 text-lg font-bold tracking-wide uppercase">
-              Books
+              BoiBondhu
             </span>
           </Link>
           <div className="mt-4 text-sm text-gray-800 dark:text-gray-400 space-y-4 lg:max-w-sm">
