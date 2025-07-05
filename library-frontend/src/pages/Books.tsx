@@ -10,7 +10,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router";
 import { Helmet } from "react-helmet";
-
+import favIcon from '../../public/book.png'
 interface BooksApiResponse {
   books: IBook[];
   meta: {
@@ -81,6 +81,7 @@ export default function Books() {
         <Helmet>
           <title>All Books</title>
           <meta name="description" content="Borrow Summary" />
+          <link rel="icon" type="image/png" href={favIcon} />
         </Helmet>
       ) : (
         ""

@@ -4,6 +4,7 @@ import Books from "./Books";
 import AboutUs from "@/components/layout/AboutUs";
 import FAQ from "@/components/layout/Faq";
 import TestimonialsCarousel from "@/components/layout/Testimonials";
+import favIcon from '../../public/book.png'
 
 
 export const Home = () => {
@@ -12,6 +13,7 @@ export const Home = () => {
       <Helmet>
         <title>Boi Bondhu Management System</title>
         <meta name="description" content="Books" />
+        <link rel="icon" type="image/png" href={favIcon} />
       </Helmet>
       <HeroSection />
       <AboutUs/>

@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
-
+import favIcon from '../../public/book.png'
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -60,6 +60,7 @@ export default function CreateBook() {
       <Helmet>
         <title>Add New Book</title>
         <meta name="description" content="Add New Book" />
+        <link rel="icon" type="image/png" href={favIcon} />
       </Helmet>
       <CardContent className="p-6">
         <h2 className="text-2xl font-bold mb-6">Add New Book</h2>

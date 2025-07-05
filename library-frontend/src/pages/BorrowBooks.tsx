@@ -2,7 +2,7 @@ import BorrowSkeleton from "@/components/Skeletons/BorrowSkeleton";
 import { useGetAllBorrowsQuery } from "@/redux/api/borrowsApi";
 import type { BorrowProps } from "@/types";
 import { Helmet } from "react-helmet";
-
+import favIcon from '../../public/book.png'
 export default function BorrowBooks() {
   const {
     data: borrows,
@@ -19,6 +19,7 @@ export default function BorrowBooks() {
       <Helmet>
         <title>Borrow Summary</title>
         <meta name="description" content="Borrow Summary" />
+        <link rel="icon" type="image/png" href={favIcon} />
       </Helmet>
       <h2 className="text-xl font-semibold mb-4">Borrow Summary</h2>
       <ul className="space-y-2 ">
