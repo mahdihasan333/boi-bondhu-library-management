@@ -9,7 +9,13 @@ import {
 
 const router = express.Router();
 
-router.route('/').post(createBook).get(getAllBooks);
-router.route('/:id').get(getBookById).patch(updateBook).delete(deleteBook);
+router.route('/')
+  .post(createBook)
+  .get(getAllBooks);
+
+router.route('/:id')
+  .get(getBookById)
+  .patch(updateBook)
+  .delete(deleteBook);
 
 export const BookRoutes = router;

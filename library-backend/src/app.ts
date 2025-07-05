@@ -3,7 +3,6 @@ import cors from 'cors';
 import { BookRoutes } from './app/modules/book/book.route';
 import { BorrowRoutes } from './app/modules/borrow/borrow.route';
 
-
 const app: Application = express();
 
 app.use(
@@ -28,6 +27,7 @@ app.get('/', (_req: Request, res: Response) => {
   });
 });
 
+// Routes mount
 app.use('/api/books', BookRoutes);
 app.use('/api/borrow', BorrowRoutes);
 

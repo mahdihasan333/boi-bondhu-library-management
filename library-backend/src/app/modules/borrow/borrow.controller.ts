@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
-import { Borrow } from './borrow.model';
 import { Book } from '../book/book.model';
+import { Borrow } from './borrow.model';
 
+
+// Borrow a book
 export const borrowBook = async (req: Request, res: Response) => {
   try {
     const { bookId } = req.params;
@@ -14,11 +16,14 @@ export const borrowBook = async (req: Request, res: Response) => {
     }
 
     if (quantity > book.copies) {
-      res.status(400).json({ success: false, message: 'Not enough copies' });
+      res.status(400).json({ success: false, message: 'Not enough copies available' });
       return;
     }
 
+    // Create borrow record
     const borrow = await Borrow.create({ book: bookId, quantity, dueDate });
+
+    // Update book copies and availability
     book.copies -= quantity;
     book.available = book.copies > 0;
     await book.save();
@@ -29,6 +34,7 @@ export const borrowBook = async (req: Request, res: Response) => {
   }
 };
 
+// Get borrow summary
 export const getBorrowSummary = async (_req: Request, res: Response) => {
   try {
     const summary = await Borrow.aggregate([

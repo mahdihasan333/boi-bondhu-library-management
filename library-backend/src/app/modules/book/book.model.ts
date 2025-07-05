@@ -1,6 +1,17 @@
 import { Schema, model } from 'mongoose';
 
-const bookSchema = new Schema(
+export interface IBook {
+  title: string;
+  author: string;
+  genre: 'FICTION' | 'NON_FICTION' | 'SCIENCE' | 'HISTORY' | 'BIOGRAPHY' | 'FANTASY';
+  isbn: string;
+  description?: string;
+  copies: number;
+  available?: boolean;
+  image?: string;
+}
+
+const bookSchema = new Schema<IBook>(
   {
     title: { type: String, required: true, trim: true },
     author: { type: String, required: true, trim: true },
@@ -18,4 +29,4 @@ const bookSchema = new Schema(
   { timestamps: true }
 );
 
-export const Book = model('Book', bookSchema);
+export const Book = model<IBook>('Book', bookSchema);

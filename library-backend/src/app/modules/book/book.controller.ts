@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { Book } from './book.model';
 
+
+// Create Book
 export const createBook = async (req: Request, res: Response) => {
   try {
     const book = new Book({ ...req.body });
@@ -11,6 +13,7 @@ export const createBook = async (req: Request, res: Response) => {
   }
 };
 
+// Get All Books (with filter, pagination, sorting)
 export const getAllBooks = async (req: Request, res: Response) => {
   try {
     const { filter, sortBy = 'createdAt', sort = 'desc', limit = '10', page = '1' } = req.query;
@@ -39,6 +42,7 @@ export const getAllBooks = async (req: Request, res: Response) => {
   }
 };
 
+// Get Single Book by ID
 export const getBookById = async (req: Request, res: Response) => {
   try {
     const book = await Book.findById(req.params.id);
@@ -52,22 +56,29 @@ export const getBookById = async (req: Request, res: Response) => {
   }
 };
 
+// Update Book by ID
 export const updateBook = async (req: Request, res: Response) => {
   try {
-    const book = await Book.findByIdAndUpdate(
-      req.params.id,
-      { ...req.body, available: req.body.copies > 0 },
-      { new: true }
-    );
+    const updatedData = { ...req.body, available: req.body.copies > 0 };
+    const book = await Book.findByIdAndUpdate(req.params.id, updatedData, { new: true });
+    if (!book) {
+      res.status(404).json({ success: false, message: 'Book not found' });
+      return;
+    }
     res.status(200).json({ success: true, data: book });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
   }
 };
 
+// Delete Book by ID
 export const deleteBook = async (req: Request, res: Response) => {
   try {
     const book = await Book.findByIdAndDelete(req.params.id);
+    if (!book) {
+      res.status(404).json({ success: false, message: 'Book not found' });
+      return;
+    }
     res.status(200).json({ success: true, data: book });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
