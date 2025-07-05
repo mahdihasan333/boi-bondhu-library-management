@@ -7,7 +7,7 @@ import {
 
 export default function FAQ() {
   return (
-    <section className="max-w-7xl mx-auto px-4 py-10 sm:px-6 lg:px-8">
+    <section className="max-w-7xl mx-auto py-10">
       <h1 className="text-3xl pt-5 sm:text-4xl font-bold mb-8 text-center text-gray-900 dark:text-white">
         Frequently Asked Questions
       </h1>
