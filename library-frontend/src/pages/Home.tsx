@@ -1,6 +1,7 @@
 import { HeroSection } from "@/components/layout/HeroSection";
 import { Helmet } from "react-helmet";
 import Books from "./Books";
+import AboutUs from "@/components/layout/AboutUs";
 
 
 export const Home = () => {
@@ -11,6 +12,7 @@ export const Home = () => {
         <meta name="description" content="Books" />
       </Helmet>
       <HeroSection />
+      <AboutUs/>
       <Books />
     </div>
   );
